@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MasterStore - Bảng Giá</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid #00ffcc33;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header h1 {
+            font-size: 24px;
+            background: linear-gradient(135deg, #00ffcc, #00ccff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+        }
+        .header p {
+            color: #888;
+            font-size: 13px;
+        }
+        
+        /* Container */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+        .tab {
+            padding: 10px 20px;
+            background: #1a1a1a;
+            border: 1px solid #1a1a1a;
+            border-radius: 20px;
+            color: #fff;
+            cursor: pointer;
+            white-space: nowrap;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        .tab.active {
+            background: #00ffcc;
+            color: #000;
+            border-color: #00ffcc;
+        }
+        .tab:hover {
+            border-color: #00ffcc;
+        }
+        
+        /* Danh mục */
+        .category {
+            margin-bottom: 30px;
+        }
+        .category h2 {
+            color: #00ffcc;
+            font-size: 18px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #1a1a1a;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* Item */
+        .item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #121212;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 12px;
+            border: 1px solid #1a1a1a;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .item:hover {
+            border-color: #00ffcc;
+            transform: translateX(5px);
+            background: #1a1a1a;
+        }
+        .item .info {
+            flex: 1;
+        }
+        .item .name {
+            font-size: 15px;
+            font-weight: 600;
+            color: #fff;
+        }
+        .item .desc {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
+        .item .price {
+            font-size: 16px;
+            font-weight: bold;
+            color: #00ffcc;
+            text-align: right;
+        }
+        .item .price span {
+            display: block;
+            font-size: 11px;
+            color: #666;
+            font-weight: normal;
+        }
+        
+        /* Badge */
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+        .badge.hot {
+            background: #ff3333;
+            color: #fff;
+        }
+        .badge.new {
+            background: #00ffcc;
+            color: #000;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            color: #444;
+            font-size: 12px;
+            padding: 30px 20px;
+            border-top: 1px solid #1a1a1a;
+            margin-top: 30px;
+        }
+        .footer a {
+            color: #00ffcc;
+            text-decoration: none;
+        }
+        
+        /* Search */
+        .search-box {
+            margin-bottom: 20px;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 12px 20px;
+            background: #121212;
+            border: 1px solid #1a1a1a;
+            border-radius: 25px;
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s;
+        }
+        .search-box input:focus {
+            border-color: #00ffcc;
+        }
+        
+        /* Responsive */
+        @media (max-width: 400px) {
+            .header h1 { font-size: 20px; }
+            .item { padding: 12px; }
+            .item .name { font-size: 13px; }
+            .item .price { font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <div class="header">
+        <h1>🔥 MASTER STORE</h1>
+        <p>Bảng giá cập nhật: 27/09/2026</p>
+    </div>
+
+    <div class="container">
+        
+        <!-- Search -->
+        <div class="search-box">
+            <input type="text" id="search" placeholder="🔍 Tìm kiếm sản phẩm...">
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <div class="tab active" onclick="filterTab('all')">Tất cả</div>
+            <div class="tab" onclick="filterTab('android')">🤖 Android</div>
+            <div class="tab" onclick="filterTab('ios')">🍏 iOS</div>
+            <div class="tab" onclick="filterTab('proxy')">🌐 Proxy</div>
+            <div class="tab" onclick="filterTab('other')">📦 Khác</div>
+        </div>
+
+        <!-- ANDROID -->
+        <div class="category" data-category="android">
+            <h2>🤖 ANDROID</h2>
+            <div class="item">
+                <div class="info">
+                    <div class="name">Drip Client <span class="badge hot">HOT</span></div>
+                    <div class="desc">Menu Hack FF Android</div>
+                </div>
+                <div class="price">30,000đ <span>/ 1 ngày</span></div>
+            </div>
+            <div class="item">
+                <div class="info">
+                    <div class="name">Drip Client</div>
+                    <div class="desc">Menu Hack FF Android</div>
+                </div>
+                <div class="price">90,000đ <span>/ 7 ngày</span></div>
+            </div>
+            <div class="item">
+                <div class="info">
+                    <div class="name">Drip Client</div>
+                    <div class="desc">Menu Hack FF Android</div>
+                </div>
+                <div class="price">180,000đ <span>/ 31 ngày</span></div>
+            </div>
+            <div class="item">
+                <div class="info">
+                    <div class="name">Proxy Android (Meowt)</div>
+                    <div class="desc">Proxy giảm ping FF</div>
+                </div>
+                <div class="price">100,000đ <span>/ 7 ngày</span></div>
+            </div>
+        </div>
+
+        <!-- IOS -->
+        <div class="category" data-category="ios">
+            <h2>🍏 IOS</h2>
+            <div class="item">
+                <div class="info">
+                    <div class="name">Fluorite <span class="badge new">NEW</span></div>
+                    <div class="desc">Menu Hack FF iOS</div>
+                </div>
+                <div class="price">65,000đ <span>/ 1 ngày</span></div>
+            </div>
+            <div class="item">
+                <div class="info">
+                    <div class="name">Fluorite</div>
+                    <div class="desc">Menu Hack FF iOS</div>
+                </div>
+                <div class="price">160,000đ <span>/ 7 ngày</span></div>
+            </div>
+            <div class="item">
+                <div class="info">
+                    <div class="name">Fluorite</div>
+                    <div class="desc">Menu Hack FF iOS</div>
+                </div>
+                <div class="price">280,000đ <span>/ 31 ngày</span></div>
+            </div>
+            <div class="item">
+                <div class="info">
+                    <div class="name">Migul Pro <span class="badge hot">HOT</span></div>
+                    <div class="desc">Menu Hack FF iOS</div>
+                </div>
+                <div class="price">450,000đ <span>/ 31 ngày</span></div>
+            </div>
+            <div class="item">
+                <div class="info">
+                    <div class="name">Proxy IPA FF</div>
+                    <div class="desc">Proxy FF iOS</div>
+                </div>
+                <div class="price">100,000đ <span>/ 30 ngày</span></div>
+            </div>
+        </div>
+
+        <!-- PROXY -->
+        <div class="category" data-category="proxy">
+            <h2>🌐 PROXY</h2>
+            <div class="item">
+                <div class="info">
+                    <div class="name">Proxy IPA</div>
+                    <div class="desc">Proxy FF iOS</div>
+                </div>
+                <div class="price">5,000đ <span>/ 1 giờ</span></div>
+            </div>
+            <div class="item">
+                <div class="info">
+                    <div class="name">Proxy IPA</div>
+                    <div class="desc">Proxy FF iOS</div>
+                </div>
+                <div class="price">20,000đ <span>/ 1 ngày</span></div>
+            </div>
+            <div class="item">
+                <div class="info">
+                    <div class="name">Proxy IPA</div>
+                    <div class="desc">Proxy FF iOS</div>
+                </div>
+                <div class="price">100,000đ <span>/ 30 ngày</span></div>
+            </div>
+            <div class="item">
+                <div class="info">
+                    <div class="name">Proxy IPA</div>
+                    <div class="desc">Proxy FF iOS</div>
+                </div>
+                <div class="price">250,000đ <span>/ Vĩnh viễn</span></div>
+            </div>
+        </div>
+
+        <!-- KHÁC -->
+        <div class="category" data-category="other">
+            <h2>📦 KHÁC</h2>
+            <div class="item">
+                <div class="info">
+                    <div class="name">Liên Quân (iOS)</div>
+                    <div class="desc">Menu Hack LQ iOS</div>
+                </div>
+                <div class="price">150,000đ <span>/ 30 ngày</span></div>
+            </div>
+            <div class="item">
+                <div class="info">
+                    <div class="name">Play Together VNG</div>
+                    <div class="desc">Menu Hack PT iOS</div>
+                </div>
+                <div class="price">200,000đ <span>/ 31 ngày</span></div>
+            </div>
+        </div>
+
+        <!-- Liên hệ -->
+        <div class="category">
+            <h2>📞 LIÊN HỆ</h2>
+            <div class="item" onclick="window.open('https://t.me/dongkaa')">
+                <div class="info">
+                    <div class="name">Telegram</div>
+                    <div class="desc">Liên hệ mua hàng</div>
+                </div>
+                <div class="price">@dongkaa</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        © 2026 MasterStore - All rights reserved<br>
+        <a href="https://t.me/dongkaa">Telegram</a>
+    </div>
+
+    <script>
+        // ===== TÌM KIẾM =====
+        document.getElementById('search').addEventListener('input', function(e) {
+            const value = e.target.value.toLowerCase();
+            document.querySelectorAll('.item').forEach(item => {
+                const name = item.querySelector('.name').textContent.toLowerCase();
+                const desc = item.querySelector('.desc')?.textContent.toLowerCase() || '';
+                if (name.includes(value) || desc.includes(value)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+
+        // ===== LỌC TAB =====
+        function filterTab(category) {
+            // Active tab
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Filter
+            document.querySelectorAll('.category').forEach(cat => {
+                if (category === 'all') {
+                    cat.style.display = 'block';
+                } else {
+                    cat.style.display = cat.dataset.category === category ? 'block' : 'none';
+                }
+            });
+        }
+    </script>
+
+</body>
+                                              </html>
